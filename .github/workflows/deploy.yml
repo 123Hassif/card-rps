@@ -31,9 +31,8 @@ jobs:
         run: npm install
       - name: Run Linter
         run: npm run lint
-      # Uncomment the next line when tests are implemented
-      # - name: Run Tests
-      #   run: npm run test:unit
+      - name: Run Tests
+        run: npm run test:unit
 
   build-and-deploy:
     needs: test
