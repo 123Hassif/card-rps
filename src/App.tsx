@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGameEngine } from './hooks/useGameEngine';
 import { PlayingCard } from './components/Card';
 import './index.css';

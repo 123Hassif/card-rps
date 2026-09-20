@@ -1,4 +1,3 @@
-import React from 'react';
 import { CardType } from '../game/types';
 
 interface CardProps {
@@ -14,7 +13,7 @@ const ICONS = {
   SCISSORS: '✂️'
 };
 
-export const PlayingCard: React.FC<CardProps> = ({ type, onClick, disabled, className = '' }) => {
+export const PlayingCard = ({ type, onClick, disabled, className = '' }: CardProps) => {
   const isFaceDown = !type;
 
   return (
