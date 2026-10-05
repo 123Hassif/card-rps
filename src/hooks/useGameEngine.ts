@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Card, GamePhase } from '../game/types';
 import { createPool, shuffleDeck } from '../game/deck';
 import { determineWinner, RoundResult } from '../game/logic';
-import { playRandomCard } from '../game/bot';
+import { playSmartCard } from '../game/bot';
 
 interface GameState {
   phase: GamePhase;
@@ -81,8 +81,8 @@ export function useGameEngine() {
     const playerCard = state.playerHand.find(c => c.id === cardId);
     if (!playerCard) return;
 
-    // Bot plays
-    const botCard = playRandomCard(state.botHand);
+    // Bot plays (Smart mode to avoid copying)
+    const botCard = playSmartCard(state.botHand, playerCard.type);
 
     // Resolve
     const result = determineWinner(playerCard.type, botCard.type);
