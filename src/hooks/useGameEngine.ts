@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Card, RoundResult, GamePhase } from '../game/types';
+import { Card, GamePhase } from '../game/types';
 import { createPool, shuffleDeck } from '../game/deck';
-import { determineWinner } from '../game/logic';
+import { determineWinner, RoundResult } from '../game/logic';
 import { playRandomCard } from '../game/bot';
 
 interface GameState {
