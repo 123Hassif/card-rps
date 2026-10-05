@@ -1,33 +1,25 @@
 import { describe, it, expect } from 'vitest';
-import { createDeck, shuffleDeck, drawCards } from './deck';
+import { createPool, shuffleDeck } from './deck';
 
 describe('Deck Operations', () => {
-  it('should create a deck of 15 cards with 5 of each type', () => {
-    const deck = createDeck();
-    expect(deck).toHaveLength(15);
+  it('should create a pool of 6 cards with 2 of each type', () => {
+    const pool = createPool();
+    expect(pool).toHaveLength(6);
     
-    const rocks = deck.filter(c => c.type === 'ROCK');
-    const papers = deck.filter(c => c.type === 'PAPER');
-    const scissors = deck.filter(c => c.type === 'SCISSORS');
+    const rocks = pool.filter(c => c.type === 'ROCK');
+    const papers = pool.filter(c => c.type === 'PAPER');
+    const scissors = pool.filter(c => c.type === 'SCISSORS');
     
-    expect(rocks).toHaveLength(5);
-    expect(papers).toHaveLength(5);
-    expect(scissors).toHaveLength(5);
+    expect(rocks).toHaveLength(2);
+    expect(papers).toHaveLength(2);
+    expect(scissors).toHaveLength(2);
   });
 
   it('should shuffle a deck without losing cards', () => {
-    const deck = createDeck();
-    const shuffled = shuffleDeck(deck);
+    const pool = createPool();
+    const shuffled = shuffleDeck(pool);
     
-    expect(shuffled).toHaveLength(deck.length);
-    expect(shuffled).not.toBe(deck);
-  });
-
-  it('should draw a specific number of cards', () => {
-    const deck = createDeck();
-    const { drawn, remaining } = drawCards(deck, 3);
-    
-    expect(drawn).toHaveLength(3);
-    expect(remaining).toHaveLength(12);
+    expect(shuffled).toHaveLength(pool.length);
+    expect(shuffled).not.toBe(pool);
   });
 });

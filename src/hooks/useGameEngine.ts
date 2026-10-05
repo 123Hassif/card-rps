@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Card } from '../game/types';
-import { createDeck, shuffleDeck, drawCards } from '../game/deck';
-import { determineWinner, RoundResult } from '../game/logic';
+import { Card, RoundResult, GamePhase } from '../game/types';
+import { createPool, shuffleDeck } from '../game/deck';
+import { determineWinner } from '../game/logic';
 import { playRandomCard } from '../game/bot';
 
 interface GameState {
-  playerDeck: Card[];
-  botDeck: Card[];
+  phase: GamePhase;
+  draftPool: Card[];
   playerHand: Card[];
   botHand: Card[];
   playerScore: number;
@@ -17,42 +17,66 @@ interface GameState {
     result: RoundResult | null;
   };
   isResolving: boolean;
-  gameOver: boolean;
 }
 
 const HAND_SIZE = 3;
+const SCORE_TO_WIN = 2;
 
 export function useGameEngine() {
   const [state, setState] = useState<GameState>({
-    playerDeck: [],
-    botDeck: [],
+    phase: 'DRAFT',
+    draftPool: [],
     playerHand: [],
     botHand: [],
     playerScore: 0,
     botScore: 0,
     currentRound: { playerCard: null, botCard: null, result: null },
     isResolving: false,
-    gameOver: false,
   });
 
-  // Init game
+  // Init draft pool
   useEffect(() => {
-    const pDeck = shuffleDeck(createDeck());
-    const bDeck = shuffleDeck(createDeck());
-    const pDraw = drawCards(pDeck, HAND_SIZE);
-    const bDraw = drawCards(bDeck, HAND_SIZE);
-
     setState(s => ({
       ...s,
-      playerDeck: pDraw.remaining,
-      playerHand: pDraw.drawn,
-      botDeck: bDraw.remaining,
-      botHand: bDraw.drawn,
+      draftPool: createPool()
     }));
   }, []);
 
+  const selectDraftCard = useCallback((cardId: string) => {
+    if (state.phase !== 'DRAFT') return;
+
+    setState(s => {
+      const cardToPick = s.draftPool.find(c => c.id === cardId);
+      if (!cardToPick || s.playerHand.length >= HAND_SIZE) return s;
+
+      const newHand = [...s.playerHand, cardToPick];
+      const newPool = s.draftPool.filter(c => c.id !== cardId);
+
+      // Check if draft is finished for player
+      if (newHand.length === HAND_SIZE) {
+        // Bot automatically drafts 3 random cards
+        const botPool = shuffleDeck(createPool());
+        const botHand = botPool.slice(0, HAND_SIZE);
+
+        return {
+          ...s,
+          draftPool: [],
+          playerHand: newHand,
+          botHand: botHand,
+          phase: 'PLAYING'
+        };
+      }
+
+      return {
+        ...s,
+        draftPool: newPool,
+        playerHand: newHand
+      };
+    });
+  }, [state.phase]);
+
   const playCard = useCallback((cardId: string) => {
-    if (state.isResolving || state.gameOver) return;
+    if (state.phase !== 'PLAYING' || state.isResolving) return;
 
     const playerCard = state.playerHand.find(c => c.id === cardId);
     if (!playerCard) return;
@@ -63,60 +87,53 @@ export function useGameEngine() {
     // Resolve
     const result = determineWinner(playerCard.type, botCard.type);
 
-    // Update hands and round state
+    // Calculate new scores
+    const newPlayerScore = result === 'PLAYER' ? state.playerScore + 1 : state.playerScore;
+    const newBotScore = result === 'BOT' ? state.botScore + 1 : state.botScore;
+
+    const newPlayerHand = state.playerHand.filter(c => c.id !== cardId);
+    const newBotHand = state.botHand.filter(c => c.id !== botCard.id);
+
     setState(s => ({
       ...s,
-      playerHand: s.playerHand.filter(c => c.id !== cardId),
-      botHand: s.botHand.filter(c => c.id !== botCard.id),
+      playerHand: newPlayerHand,
+      botHand: newBotHand,
       currentRound: { playerCard, botCard, result },
       isResolving: true,
-      playerScore: result === 'PLAYER' ? s.playerScore + 1 : s.playerScore,
-      botScore: result === 'BOT' ? s.botScore + 1 : s.botScore,
+      playerScore: newPlayerScore,
+      botScore: newBotScore,
     }));
 
-    // Wait a bit, then draw new cards and reset round
+    // Wait a bit, then reset round and check for end game
     setTimeout(() => {
       setState(s => {
-        const pDraw = drawCards(s.playerDeck, 1);
-        const bDraw = drawCards(s.botDeck, 1);
-
-        const newPlayerHand = [...s.playerHand, ...pDraw.drawn];
-        const newBotHand = [...s.botHand, ...bDraw.drawn];
-
-        const isOver = newPlayerHand.length === 0;
+        const isEnded = 
+          newPlayerScore >= SCORE_TO_WIN || 
+          newBotScore >= SCORE_TO_WIN || 
+          newPlayerHand.length === 0;
 
         return {
           ...s,
-          playerDeck: pDraw.remaining,
-          botDeck: bDraw.remaining,
-          playerHand: newPlayerHand,
-          botHand: newBotHand,
           currentRound: { playerCard: null, botCard: null, result: null },
           isResolving: false,
-          gameOver: isOver,
+          phase: isEnded ? 'ENDED' : 'PLAYING',
         };
       });
-    }, 2000); // 2 seconds animation/suspense
+    }, 2000);
   }, [state]);
 
   const resetGame = useCallback(() => {
-    const pDeck = shuffleDeck(createDeck());
-    const bDeck = shuffleDeck(createDeck());
-    const pDraw = drawCards(pDeck, HAND_SIZE);
-    const bDraw = drawCards(bDeck, HAND_SIZE);
-
     setState({
-      playerDeck: pDraw.remaining,
-      botDeck: bDraw.remaining,
-      playerHand: pDraw.drawn,
-      botHand: bDraw.drawn,
+      phase: 'DRAFT',
+      draftPool: createPool(),
+      playerHand: [],
+      botHand: [],
       playerScore: 0,
       botScore: 0,
       currentRound: { playerCard: null, botCard: null, result: null },
       isResolving: false,
-      gameOver: false,
     });
   }, []);
 
-  return { state, playCard, resetGame };
+  return { state, selectDraftCard, playCard, resetGame };
 }

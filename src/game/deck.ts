@@ -2,17 +2,18 @@ import { Card, CardType } from './types';
 
 export const CARD_TYPES: CardType[] = ['ROCK', 'PAPER', 'SCISSORS'];
 
-export function createDeck(): Card[] {
-  const deck: Card[] = [];
-  for (let i = 0; i < 5; i++) {
+export function createPool(): Card[] {
+  const pool: Card[] = [];
+  // 2 of each card (Total 6)
+  for (let i = 0; i < 2; i++) {
     for (const type of CARD_TYPES) {
-      deck.push({
+      pool.push({
         id: `${type}-${i}`,
         type
       });
     }
   }
-  return deck;
+  return pool;
 }
 
 export function shuffleDeck(deck: Card[]): Card[] {
@@ -22,11 +23,4 @@ export function shuffleDeck(deck: Card[]): Card[] {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
-}
-
-export function drawCards(deck: Card[], count: number): { drawn: Card[], remaining: Card[] } {
-  return {
-    drawn: deck.slice(0, count),
-    remaining: deck.slice(count)
-  };
 }

@@ -3,9 +3,9 @@ import { PlayingCard } from './components/Card';
 import './index.css';
 
 function App() {
-  const { state, playCard, resetGame } = useGameEngine();
+  const { state, selectDraftCard, playCard, resetGame } = useGameEngine();
   
-  const { playerHand, botHand, playerScore, botScore, currentRound, isResolving, gameOver } = state;
+  const { phase, draftPool, playerHand, botHand, playerScore, botScore, currentRound, isResolving } = state;
 
   return (
     <div className="game-container">
@@ -14,53 +14,73 @@ function App() {
         <div className="scoreboard">
           <div className="score">
             <span>YOU</span>
-            <span className="score-number">{playerScore}</span>
+            <span className="score-number">{playerScore}/2</span>
           </div>
           <div className="score">
             <span>BOT</span>
-            <span className="score-number">{botScore}</span>
+            <span className="score-number">{botScore}/2</span>
           </div>
         </div>
       </header>
 
       <main className="board">
-        {/* BOT HAND */}
-        <div className="hand bot-hand">
-          {botHand.map((card, i) => (
-            <PlayingCard key={card.id || `bot-${i}`} disabled className="bot-card" />
-          ))}
-        </div>
-
-        {/* ARENA */}
-        <div className="arena">
-          {currentRound.botCard && (
-            <div className="arena-card-wrapper bot-arena">
-              <PlayingCard type={currentRound.botCard.type} disabled className="slide-down" />
+        {phase === 'DRAFT' && (
+          <div className="draft-screen">
+            <h2>CHOOSE 3 CARDS</h2>
+            <div className="draft-pool">
+              {draftPool.map(card => (
+                <PlayingCard 
+                  key={card.id} 
+                  type={card.type} 
+                  onClick={() => selectDraftCard(card.id)} 
+                />
+              ))}
             </div>
-          )}
-          
-          <div className="arena-center">
-            {currentRound.result && (
-              <div className={`result-banner ${currentRound.result.toLowerCase()}`}>
-                {currentRound.result === 'DRAW' ? 'DRAW!' : 
-                 currentRound.result === 'PLAYER' ? 'YOU WIN!' : 'BOT WINS!'}
-              </div>
-            )}
-            {gameOver && (
-              <div className="game-over-modal">
-                <h2>GAME OVER</h2>
-                <p>{playerScore === botScore ? "It's a tie!" : playerScore > botScore ? "You are the champion!" : "Bot defeated you."}</p>
-                <button className="btn-primary" onClick={resetGame}>PLAY AGAIN</button>
-              </div>
-            )}
+            <p>Selected: {playerHand.length} / 3</p>
           </div>
+        )}
 
-          {currentRound.playerCard && (
-            <div className="arena-card-wrapper player-arena">
-              <PlayingCard type={currentRound.playerCard.type} disabled className="slide-up" />
+        {phase !== 'DRAFT' && (
+          <>
+            {/* BOT HAND */}
+            <div className="hand bot-hand">
+              {botHand.map((card, i) => (
+                <PlayingCard key={card.id || `bot-${i}`} disabled className="bot-card" />
+              ))}
             </div>
-          )}
-        </div>
+
+            {/* ARENA */}
+            <div className="arena">
+              {currentRound.botCard && (
+                <div className="arena-card-wrapper bot-arena">
+                  <PlayingCard type={currentRound.botCard.type} disabled className="slide-down" />
+                </div>
+              )}
+              
+              <div className="arena-center">
+                {currentRound.result && (
+                  <div className={`result-banner ${currentRound.result.toLowerCase()}`}>
+                    {currentRound.result === 'DRAW' ? 'DRAW!' : 
+                     currentRound.result === 'PLAYER' ? 'YOU WIN!' : 'BOT WINS!'}
+                  </div>
+                )}
+                {phase === 'ENDED' && !currentRound.result && (
+                  <div className="game-over-modal">
+                    <h2>GAME OVER</h2>
+                    <p>{playerScore === botScore ? "IT'S A TIE!" : playerScore >= 2 ? "YOU ARE THE CHAMPION!" : "BOT DEFEATED YOU."}</p>
+                    <button className="btn-primary" onClick={resetGame}>PLAY AGAIN</button>
+                  </div>
+                )}
+              </div>
+
+              {currentRound.playerCard && (
+                <div className="arena-card-wrapper player-arena">
+                  <PlayingCard type={currentRound.playerCard.type} disabled className="slide-up" />
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
         {/* PLAYER HAND */}
         <div className="hand player-hand">
@@ -68,8 +88,8 @@ function App() {
             <PlayingCard 
               key={card.id} 
               type={card.type} 
-              onClick={() => playCard(card.id)} 
-              disabled={isResolving || gameOver}
+              onClick={() => phase === 'PLAYING' ? playCard(card.id) : undefined} 
+              disabled={isResolving || phase === 'ENDED'}
             />
           ))}
         </div>
