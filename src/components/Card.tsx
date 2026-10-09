@@ -56,7 +56,7 @@ export const PlayingCard: React.FC<CardProps> = ({
         ) : (
           <>
             <div className="character-circle-wrapper">
-              <RubberHoseCharacterIcon type={type} size={150} />
+              <RubberHoseCharacterIcon type={type} size={105} />
               {countBadge !== undefined && countBadge > 1 && (
                 <span className="count-badge">x{countBadge}</span>
               )}

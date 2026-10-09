@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardType } from '../game/types';
 import { RoundResult } from '../game/logic';
+import { RubberHoseCharacterIcon } from './RubberHoseCharacters';
 
 interface ArenaDuelProps {
   playerCard: { type: CardType } | null;
@@ -23,22 +24,36 @@ export const ArenaDuel: React.FC<ArenaDuelProps> = ({
 }) => {
   return (
     <div className="arena-duel-container" aria-label="Zone d'affrontement">
-      {/* Duel Header / Status */}
+      {/* Duel Header / Status with Animated Cartoon Avatars */}
       <div className="duel-header-banner">
-        <div className="banner-side player-side-tag">
-          <span className="tag-title">VOTRE CHOIX</span>
-          <span className="tag-move">
-            {playerCard ? TYPE_TRANSLATIONS[playerCard.type] : 'EN ATTENTE...'}
-          </span>
+        <div className={`banner-side player-side-tag ${result === 'PLAYER' ? 'side-winner' : result === 'BOT' ? 'side-loser' : ''}`}>
+          {playerCard && (
+            <div className={`duel-avatar-token player-token ${isResolving ? 'token-clash-left' : ''} ${result === 'PLAYER' ? 'token-victory' : result === 'BOT' ? 'token-defeat' : ''}`}>
+              <RubberHoseCharacterIcon type={playerCard.type} size={54} />
+            </div>
+          )}
+          <div className="tag-text-block">
+            <span className="tag-title">VOTRE CHOIX</span>
+            <span className="tag-move">
+              {playerCard ? TYPE_TRANSLATIONS[playerCard.type] : 'EN ATTENTE...'}
+            </span>
+          </div>
         </div>
 
         <div className="duel-vs-badge">VS</div>
 
-        <div className="banner-side bot-side-tag">
-          <span className="tag-title">CHOIX DE L'IA</span>
-          <span className="tag-move">
-            {botCard ? TYPE_TRANSLATIONS[botCard.type] : 'EN ATTENTE...'}
-          </span>
+        <div className={`banner-side bot-side-tag ${result === 'BOT' ? 'side-winner' : result === 'PLAYER' ? 'side-loser' : ''}`}>
+          <div className="tag-text-block">
+            <span className="tag-title">CHOIX DE L'IA</span>
+            <span className="tag-move">
+              {botCard ? TYPE_TRANSLATIONS[botCard.type] : 'EN ATTENTE...'}
+            </span>
+          </div>
+          {botCard && (
+            <div className={`duel-avatar-token bot-token ${isResolving ? 'token-clash-right' : ''} ${result === 'BOT' ? 'token-victory' : result === 'PLAYER' ? 'token-defeat' : ''}`}>
+              <RubberHoseCharacterIcon type={botCard.type} size={54} />
+            </div>
+          )}
         </div>
       </div>
 
