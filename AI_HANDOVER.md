@@ -53,12 +53,21 @@ Composants "bêtes" (dumb components) qui se contentent d'afficher l'état fourn
 
 ---
 
-## 5. Direction Artistique & UI
-*   **Style visuel** : "Cartoon / Comic book" en Noir & Blanc.
-*   **CSS** : Utilisation intensive de bordures noires épaisses (`4px solid #000`), d'ombres dures (`box-shadow`), d'emojis (🪨, 📄, ✂️) et de `transform` pour les inclinaisons.
-*   **Animations** : 
-    *   Hover effects (lift + scale) sur les cartes en main.
-    *   Keyframes CSS (`slideUp`, `slideDown`, `popIn`) gérées dans `index.css` pour l'entrée des cartes dans l'arène et l'affichage du gagnant du tour.
+## 5. Direction Artistique & UI (Refonte Rétro 1930s Rubber Hose)
+*   **Style visuel** : Dessin animé noir et blanc rétro des années 1930 (esthétique "rubber hose", type *Cuphead* et cartoons de l'ère du cinéma muet / *Steamboat Willie*).
+*   **Palette** : Monochrome strict (encre de Chine `#121212`, fond parchemin rétro `#ece5d3` / `#f5f0e1`, ombrages fusain).
+*   **Effets de film vintage** :
+    *   Grain de pellicule animé (SVG turbulence procédurale).
+    *   Rayures verticales de celluloïd oscillantes.
+    *   Scintillement de projecteur vintage (keyframes `filmFlicker`).
+    *   Vignettage iris d'époque.
+*   **Typographie** : Police cartoon rebondissante Google Font `Chewy` + vibration/tremblement d'encre (*boiling lines* / `cartoonJitter` à 12 fps).
+*   **Composants graphiques vectoriels (SVG purs)** :
+    *   `RubberHoseCharacters.tsx` : Pierre (rocher souriant aux bras rubber-hose croisés), Feuille (parchemin déroulé saluant), Ciseaux (cisailles avec mâchoire à dents acérées). Animations au survol (muscles, salut, morsure).
+    *   `ArenaDuel.tsx` : Table en bois dessinée avec perspective 2.5D, main gantée du joueur et gant de boxe à lacets du bot, effet d'impact comique *POW!*.
+    *   `AlleyBackground.tsx` : Ruelle sombre avec briques, affiches *Wanted*, tonneaux en bois cerclés de fer et château d'eau en bois (*water tower*).
+    *   `ScoreboardFilm.tsx` : Bandeau de pellicule 35mm avec perforations et compteurs mécaniques vintage (*split-flap / flip-clock*).
+    *   `CartoonFilters.tsx` : Filtres SVG pour grain et contours d'encre irréguliers à la plume.
 
 ---
 
