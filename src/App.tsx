@@ -7,6 +7,8 @@ import { ScoreboardFilm } from './components/ScoreboardFilm';
 import { ArenaDuel } from './components/ArenaDuel';
 import { RockCharacter, PaperCharacter, ScissorsCharacter } from './components/RubberHoseCharacters';
 import { CardType } from './game/types';
+import handOpenLeftWebp from './assets/images/hand_open_left.webp';
+import handOpenRightWebp from './assets/images/hand_open.webp';
 import './index.css';
 
 const App: React.FC = () => {
@@ -147,6 +149,11 @@ const App: React.FC = () => {
                   </div>
 
                   <div className="choice-buttons-row">
+                    {/* Cartoon Hand Mascot (Left Side) */}
+                    <div className="mascot-glove-pointer left-pointer" aria-hidden="true">
+                      <img src={handOpenLeftWebp} alt="" className="mascot-glove-img" width={80} height={63} draggable={false} />
+                    </div>
+
                     {/* BUTTON 1: PIERRE (ROCK) */}
                     <button
                       type="button"
@@ -194,6 +201,11 @@ const App: React.FC = () => {
                         <span className="btn-qty-badge">{handCounts.SCISSORS} dispo</span>
                       </div>
                     </button>
+
+                    {/* Cartoon Hand Mascot (Right Side) */}
+                    <div className="mascot-glove-pointer right-pointer" aria-hidden="true">
+                      <img src={handOpenRightWebp} alt="" className="mascot-glove-img" width={80} height={63} draggable={false} />
+                    </div>
                   </div>
                 </div>
 

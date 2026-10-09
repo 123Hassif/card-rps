@@ -683,6 +683,80 @@ html, body {
   100% { transform: translate(-35px, -8px) rotate(-1deg); }
 }
 
+/* ==========================================================================
+   AUTHENTIC RUBBER-HOSE HAND ANIMATIONS (TABLE STAGE)
+   ========================================================================== */
+
+.table-raster-hand,
+.table-raster-fist {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  will-change: transform;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.55));
+}
+
+/* Player Hand (Left Side) */
+.player-arm.idle .player-hand-open {
+  animation: handIdleDrumLeft 2.4s infinite ease-in-out;
+  transform-origin: 0px 220px;
+}
+
+@keyframes handIdleDrumLeft {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(-2.5deg) translateY(-4px); }
+}
+
+.player-arm.striking .player-hand-open {
+  animation: handSlapDownLeft 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  transform-origin: 0px 220px;
+}
+
+@keyframes handSlapDownLeft {
+  0% { transform: translateY(-16px) scale(0.95) rotate(-6deg); }
+  70% { transform: translateY(5px) scale(1.05) rotate(2deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+.player-arm.resolving-clash {
+  animation: handClashChargeLeft 0.22s infinite alternate ease-in-out;
+}
+
+@keyframes handClashChargeLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(20px) translateY(-3px); }
+}
+
+/* Bot Hand (Right Side) */
+.bot-arm.idle .bot-hand-open {
+  animation: handIdleDrumRight 2.4s infinite ease-in-out;
+  animation-delay: -0.8s;
+  transform-origin: 540px 220px;
+}
+
+@keyframes handIdleDrumRight {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(2.5deg) translateY(-4px); }
+}
+
+.bot-arm.striking .bot-hand-open {
+  animation: handSlapDownRight 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  transform-origin: 540px 220px;
+}
+
+@keyframes handSlapDownRight {
+  0% { transform: translateY(-16px) scale(0.95) rotate(6deg); }
+  70% { transform: translateY(5px) scale(1.05) rotate(-2deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+.bot-arm.resolving-clash {
+  animation: handClashChargeRight 0.22s infinite alternate ease-in-out;
+}
+
+@keyframes handClashChargeRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-20px) translateY(-3px); }
+}
+
 /* Comic Clash Starburst Burst */
 .comic-clash-burst {
   animation: clashPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.3) forwards;
@@ -772,6 +846,52 @@ html, body {
   align-items: center;
   gap: 1.75rem;
   flex-wrap: nowrap;
+  position: relative;
+}
+
+/* Rubber Hose Mascot Glove Pointers flanking the choice buttons */
+.mascot-glove-pointer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
+}
+
+.mascot-glove-img {
+  width: 72px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.mascot-glove-pointer.left-pointer {
+  animation: gloveBobLeft 2.4s infinite ease-in-out;
+  transform-origin: 0% 50%;
+}
+
+@keyframes gloveBobLeft {
+  0%, 100% { transform: translateY(0) rotate(-6deg) scale(0.95); }
+  50% { transform: translateY(-7px) rotate(-1deg) scale(1.02); }
+}
+
+.mascot-glove-pointer.right-pointer {
+  animation: gloveBobRight 2.4s infinite ease-in-out;
+  animation-delay: -1.2s;
+  transform-origin: 100% 50%;
+}
+
+@keyframes gloveBobRight {
+  0%, 100% { transform: translateY(0) rotate(6deg) scale(0.95); }
+  50% { transform: translateY(-7px) rotate(1deg) scale(1.02); }
+}
+
+@media (max-width: 768px) {
+  .mascot-glove-pointer {
+    display: none;
+  }
 }
 
 /* Circular Button with Rubber Hose Character Integration */

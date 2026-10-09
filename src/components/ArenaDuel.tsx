@@ -2,6 +2,10 @@ import React from 'react';
 import { CardType } from '../game/types';
 import { RoundResult } from '../game/logic';
 import { RubberHoseCharacterIcon } from './RubberHoseCharacters';
+import handOpenLeftWebp from '../assets/images/hand_open_left.webp';
+import handOpenRightWebp from '../assets/images/hand_open.webp';
+import handFistLeftWebp from '../assets/images/hand_fist_left.webp';
+import handFistRightWebp from '../assets/images/hand_fist.webp';
 
 interface ArenaDuelProps {
   playerCard: { type: CardType } | null;
@@ -57,7 +61,7 @@ export const ArenaDuel: React.FC<ArenaDuelProps> = ({
         </div>
       </div>
 
-      {/* Main Duel Stage: The Hand-Drawn Wooden Table with Rubber-Hose Hands */}
+      {/* Main Duel Stage: The Hand-Drawn Wooden Table with Authentic Rubber-Hose Hands */}
       <div className="duel-table-stage">
         <svg 
           className="table-stage-svg" 
@@ -126,110 +130,117 @@ export const ArenaDuel: React.FC<ArenaDuelProps> = ({
             <circle cx="482" cy="192" r="3.5" fill="#121212" />
           </g>
 
-          {/* PLAYER RUBBER-HOSE ARM & WHITE GLOVE (Left Side) */}
-          <g className={`rubber-arm player-arm ${playerCard ? 'striking' : 'idle'}`}>
-            {/* Black hose arm looping in from bottom-left */}
-            <path 
-              d="M-20 260 C60 260 80 165 145 145" 
-              fill="none" 
-              stroke="#121212" 
-              strokeWidth="20" 
-              strokeLinecap="round" 
-            />
+          {/* PLAYER RUBBER-HOSE ARM & HAND (Left Side) */}
+          <g className={`rubber-arm player-arm ${playerCard ? 'striking' : 'idle'} ${isResolving ? 'resolving-clash' : ''}`}>
+            {(!playerCard || playerCard.type === 'PAPER') ? (
+              /* AUTHENTIC HIGH-RES OPEN HAND FROM main.jpg */
+              <g className="raster-hand-group player-hand-open">
+                <image 
+                  href={handOpenLeftWebp} 
+                  x="-25" 
+                  y="85" 
+                  width="225" 
+                  height="178" 
+                  className="table-raster-hand"
+                />
+              </g>
+            ) : (
+              /* Arm and specialized glove (Rock fist / Scissors) */
+              <>
+                <path 
+                  d="M-20 260 C60 260 80 165 145 145" 
+                  fill="none" 
+                  stroke="#121212" 
+                  strokeWidth="20" 
+                  strokeLinecap="round" 
+                />
+                <g transform="translate(145, 125)">
+                  <ellipse cx="0" cy="18" rx="14" ry="8" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
 
-            {/* Player Glove according to choice */}
-            <g transform="translate(145, 125)">
-              {/* Glove Cuff */}
-              <ellipse cx="0" cy="18" rx="14" ry="8" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
+                  {playerCard.type === 'ROCK' && (
+                    /* AUTHENTIC CLENCHED GLOVED FIST */
+                    <g transform="translate(10, -22)">
+                      <image 
+                        href={handFistLeftWebp} 
+                        x="0" 
+                        y="0" 
+                        width="68" 
+                        height="76" 
+                        className="table-raster-fist"
+                      />
+                    </g>
+                  )}
 
-              {(!playerCard || playerCard.type === 'ROCK') && (
-                /* CLENCHED FIST FOR ROCK / IDLE */
-                <g className="glove-fist">
-                  <ellipse cx="36" cy="5" rx="30" ry="26" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
-                  <path d="M12 12 Q28 22 44 12" fill="#f5f2e8" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M26 -10 L28 8 M42 -8 L43 8 M54 -3 L52 9" stroke="#121212" strokeWidth="3.5" strokeLinecap="round" />
-                  <path d="M4 -2 L12 0 M4 4 L14 5 M5 10 L13 10" stroke="#121212" strokeWidth="2.5" strokeLinecap="round" />
+                  {playerCard.type === 'SCISSORS' && (
+                    /* TWO SNIPPING FINGERS */
+                    <g className="glove-scissors">
+                      <ellipse cx="28" cy="6" rx="24" ry="20" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
+                      <path d="M38 -10 C62 -26 78 -14 56 2" fill="#f5f2e8" stroke="#121212" strokeWidth="4.5" />
+                      <path d="M40 4 C64 12 76 2 58 -4" fill="#f5f2e8" stroke="#121212" strokeWidth="4.5" />
+                      <path d="M24 15 Q34 22 40 14" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
+                      <path d="M18 9 Q26 18 34 10" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
+                      <path d="M8 0 L16 0 M8 5 L16 5 M9 10 L16 10" stroke="#121212" strokeWidth="2.5" strokeLinecap="round" />
+                    </g>
+                  )}
                 </g>
-              )}
-
-              {playerCard?.type === 'PAPER' && (
-                /* OPEN FLAT PALM SLAPPING DOWN */
-                <g className="glove-palm">
-                  <ellipse cx="34" cy="2" rx="26" ry="22" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
-                  <path d="M44 -16 C60 -20 68 -10 54 2" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M50 -5 C70 -9 76 2 60 10" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M48 8 C68 6 72 19 56 21" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M42 19 C58 21 60 32 44 30" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M18 17 C14 30 28 32 30 20" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M12 -4 L20 -4 M10 2 L20 2 M12 8 L20 8" stroke="#121212" strokeWidth="2.5" strokeLinecap="round" />
-                </g>
-              )}
-
-              {playerCard?.type === 'SCISSORS' && (
-                /* TWO FINGERS SNIPPING FORWARD */
-                <g className="glove-scissors">
-                  <ellipse cx="28" cy="6" rx="24" ry="20" fill="#f5f2e8" stroke="#121212" strokeWidth="5" />
-                  <path d="M38 -10 C62 -26 78 -14 56 2" fill="#f5f2e8" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M40 4 C64 12 76 2 58 -4" fill="#f5f2e8" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M24 15 Q34 22 40 14" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M18 9 Q26 18 34 10" fill="#f5f2e8" stroke="#121212" strokeWidth="4" />
-                  <path d="M8 0 L16 0 M8 5 L16 5 M9 10 L16 10" stroke="#121212" strokeWidth="2.5" strokeLinecap="round" />
-                </g>
-              )}
-            </g>
+              </>
+            )}
           </g>
 
-          {/* BOT / IA CARTOON ARM & BOXING GLOVE (Right Side) */}
-          <g className={`rubber-arm bot-arm ${botCard ? 'striking' : 'idle'}`}>
-            <path 
-              d="M560 260 C480 260 460 165 395 145" 
-              fill="none" 
-              stroke="#121212" 
-              strokeWidth="20" 
-              strokeLinecap="round" 
-            />
-            {/* White stripes on bot arm */}
-            <path d="M525 252 L535 264 M485 225 L495 238 M445 185 L453 198 M415 154 L422 166" stroke="#f5f2e8" strokeWidth="6" strokeLinecap="round" />
+          {/* BOT / IA CARTOON ARM & HAND (Right Side) */}
+          <g className={`rubber-arm bot-arm ${botCard ? 'striking' : 'idle'} ${isResolving ? 'resolving-clash' : ''}`}>
+            {(!botCard || botCard.type === 'PAPER') ? (
+              /* AUTHENTIC HIGH-RES OPEN HAND FROM main.jpg (Mirrored) */
+              <g className="raster-hand-group bot-hand-open">
+                <image 
+                  href={handOpenRightWebp} 
+                  x="340" 
+                  y="85" 
+                  width="225" 
+                  height="178" 
+                  className="table-raster-hand"
+                />
+              </g>
+            ) : (
+              <>
+                <path 
+                  d="M560 260 C480 260 460 165 395 145" 
+                  fill="none" 
+                  stroke="#121212" 
+                  strokeWidth="20" 
+                  strokeLinecap="round" 
+                />
+                <path d="M525 252 L535 264 M485 225 L495 238 M445 185 L453 198 M415 154 L422 166" stroke="#f5f2e8" strokeWidth="6" strokeLinecap="round" />
 
-            {/* Bot Glove: Iconic 1930s lace-up boxing glove / dark cartoon hand */}
-            <g transform="translate(395, 125) scale(-1, 1)">
-              <ellipse cx="0" cy="18" rx="15" ry="9" fill="#2a2a2a" stroke="#121212" strokeWidth="5" />
-              <line x1="-6" y1="18" x2="6" y2="18" stroke="#f5f2e8" strokeWidth="3" />
-              <line x1="-5" y1="14" x2="5" y2="14" stroke="#f5f2e8" strokeWidth="3" />
+                <g transform="translate(395, 125) scale(-1, 1)">
+                  <ellipse cx="0" cy="18" rx="15" ry="9" fill="#2a2a2a" stroke="#121212" strokeWidth="5" />
 
-              {(!botCard || botCard.type === 'ROCK') && (
-                /* BOXING GLOVE FIST */
-                <g className="boxing-glove-rock">
-                  <ellipse cx="38" cy="4" rx="32" ry="27" fill="#323232" stroke="#121212" strokeWidth="5" />
-                  <ellipse cx="28" cy="18" rx="15" ry="11" fill="#252525" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M30 -12 Q46 -14 56 -4" fill="none" stroke="#777" strokeWidth="3.5" strokeLinecap="round" />
-                  <path d="M50 -8 Q60 6 50 18" fill="none" stroke="#121212" strokeWidth="3" strokeDasharray="4 3" />
+                  {botCard.type === 'ROCK' && (
+                    <g transform="translate(10, -22)">
+                      <image 
+                        href={handFistRightWebp} 
+                        x="0" 
+                        y="0" 
+                        width="68" 
+                        height="76" 
+                        className="table-raster-fist"
+                      />
+                    </g>
+                  )}
+
+                  {botCard.type === 'SCISSORS' && (
+                    <g className="bot-glove-scissors">
+                      <ellipse cx="30" cy="6" rx="26" ry="21" fill="#323232" stroke="#121212" strokeWidth="5" />
+                      <path d="M40 -10 C62 -26 78 -14 56 2" fill="#323232" stroke="#121212" strokeWidth="4.5" />
+                      <path d="M42 4 C64 12 76 2 58 -4" fill="#323232" stroke="#121212" strokeWidth="4.5" />
+                      <path d="M26 15 Q36 22 42 14" fill="#252525" stroke="#121212" strokeWidth="4" />
+                    </g>
+                  )}
                 </g>
-              )}
-
-              {botCard?.type === 'PAPER' && (
-                /* OPEN DEFENSIVE OPPONENT PALM */
-                <g className="bot-glove-paper">
-                  <ellipse cx="36" cy="2" rx="28" ry="24" fill="#323232" stroke="#121212" strokeWidth="5" />
-                  <path d="M46 -16 C60 -20 68 -10 56 2" fill="#323232" stroke="#121212" strokeWidth="4" />
-                  <path d="M52 -5 C70 -9 76 2 60 10" fill="#323232" stroke="#121212" strokeWidth="4" />
-                  <path d="M50 8 C68 6 72 19 56 21" fill="#323232" stroke="#121212" strokeWidth="4" />
-                  <path d="M44 19 C58 21 60 32 46 30" fill="#323232" stroke="#121212" strokeWidth="4" />
-                  <path d="M20 17 C16 30 30 32 32 20" fill="#252525" stroke="#121212" strokeWidth="4" />
-                </g>
-              )}
-
-              {botCard?.type === 'SCISSORS' && (
-                /* TWO CHOPPING FINGERS / SHEARS PUNCH */
-                <g className="bot-glove-scissors">
-                  <ellipse cx="30" cy="6" rx="26" ry="21" fill="#323232" stroke="#121212" strokeWidth="5" />
-                  <path d="M40 -10 C62 -26 78 -14 56 2" fill="#323232" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M42 4 C64 12 76 2 58 -4" fill="#323232" stroke="#121212" strokeWidth="4.5" />
-                  <path d="M26 15 Q36 22 42 14" fill="#252525" stroke="#121212" strokeWidth="4" />
-                </g>
-              )}
-            </g>
+              </>
+            )}
           </g>
+
 
           {/* DUEL IMPACT CLASH EFFECT IN CENTER OVER TABLE */}
           {isResolving && (
