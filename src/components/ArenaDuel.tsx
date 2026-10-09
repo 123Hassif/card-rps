@@ -2,6 +2,8 @@ import React from 'react';
 import { CardType } from '../game/types';
 import { RoundResult } from '../game/logic';
 import { RubberHoseCharacterIcon } from './RubberHoseCharacters';
+import fondDuelWebp from '../assets/images/fond_duel.webp';
+import fondDuelJpg from '../assets/images/fond_duel.jpg';
 import handOpenLeftWebp from '../assets/images/hand_open_left.webp';
 import handOpenRightWebp from '../assets/images/hand_open.webp';
 import handFistLeftWebp from '../assets/images/hand_fist_left.webp';
@@ -61,74 +63,27 @@ export const ArenaDuel: React.FC<ArenaDuelProps> = ({
         </div>
       </div>
 
-      {/* Main Duel Stage: The Hand-Drawn Wooden Table with Authentic Rubber-Hose Hands */}
+      {/* Main Duel Stage: The Authentic Alleyway Stage with Duel Table & Rubber-Hose Hands */}
       <div className="duel-table-stage">
+        {/* Authentic Background Alleyway with Duel Table */}
+        <div className="stage-background-wrap" aria-hidden="true">
+          <picture>
+            <source srcSet={fondDuelWebp} type="image/webp" />
+            <img 
+              src={fondDuelJpg} 
+              alt="Arène de duel en ruelle vintage" 
+              className="stage-bg-image"
+              draggable={false}
+            />
+          </picture>
+          <div className="stage-shadow-vignette" />
+        </div>
+
         <svg 
           className="table-stage-svg" 
           viewBox="0 0 540 290" 
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Backdrop shadows under table */}
-          <ellipse cx="270" cy="265" rx="220" ry="22" fill="#000" opacity="0.4" />
-
-          {/* Wooden Table Legs */}
-          <g className="table-legs" stroke="#121212" strokeWidth="5.5" fill="#46382a">
-            {/* Left front leg */}
-            <rect x="75" y="195" width="28" height="75" rx="3" />
-            <line x1="89" y1="195" x2="89" y2="270" stroke="#121212" strokeWidth="2" />
-            {/* Right front leg */}
-            <rect x="437" y="195" width="28" height="75" rx="3" />
-            <line x1="451" y1="195" x2="451" y2="270" stroke="#121212" strokeWidth="2" />
-            {/* Center crossbeam */}
-            <rect x="103" y="225" width="334" height="16" fill="#382d22" />
-          </g>
-
-          {/* Hand-Drawn Wooden Table Surface */}
-          <g className="wooden-table">
-            {/* Table edge apron */}
-            <polygon 
-              points="40,185 500,185 485,210 55,210" 
-              fill="#524233" 
-              stroke="#121212" 
-              strokeWidth="5.5" 
-              strokeLinejoin="round" 
-            />
-            {/* Tabletop plank perspective */}
-            <polygon 
-              points="75,120 465,120 500,185 40,185" 
-              fill="#6b5744" 
-              stroke="#121212" 
-              strokeWidth="5.5" 
-              strokeLinejoin="round" 
-            />
-
-            {/* Wood plank separator lines */}
-            <path d="M172 120 L154 185" stroke="#121212" strokeWidth="3.5" />
-            <path d="M270 120 L270 185" stroke="#121212" strokeWidth="3.5" />
-            <path d="M368 120 L386 185" stroke="#121212" strokeWidth="3.5" />
-
-            {/* Hand-drawn wood grain and knots */}
-            <g stroke="#121212" strokeWidth="2" fill="none" opacity="0.6">
-              <path d="M100 138 Q115 152 105 170" />
-              <path d="M130 128 Q140 155 132 175" />
-              <ellipse cx="112" cy="150" rx="4" ry="2.5" fill="#121212" />
-
-              <path d="M200 135 Q215 150 210 172" />
-              <path d="M240 130 Q250 155 242 180" />
-              <ellipse cx="225" cy="155" rx="5" ry="3" fill="#121212" />
-
-              <path d="M300 135 Q315 152 305 172" />
-              <path d="M335 130 Q345 150 338 178" />
-
-              <path d="M410 138 Q430 152 420 172" />
-              <path d="M445 128 Q455 155 448 180" />
-              <ellipse cx="430" cy="150" rx="4" ry="2.5" fill="#121212" />
-            </g>
-
-            {/* Corner table iron nails / studs */}
-            <circle cx="58" cy="192" r="3.5" fill="#121212" />
-            <circle cx="482" cy="192" r="3.5" fill="#121212" />
-          </g>
 
           {/* PLAYER RUBBER-HOSE ARM & HAND (Left Side) */}
           <g className={`rubber-arm player-arm ${playerCard ? 'striking' : 'idle'} ${isResolving ? 'resolving-clash' : ''}`}>
