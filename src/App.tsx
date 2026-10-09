@@ -142,7 +142,7 @@ const App: React.FC = () => {
                     <span className="choices-heading jitter-text-subtle">
                       {isResolving 
                         ? 'RÉSOLUTION DU DUEL...' 
-                        : 'CHOISISSEZ VOTRE ATTAQUE :'}
+                        : 'CHOISISSEZ VOTRE ARMEMENT !'}
                     </span>
                   </div>
 

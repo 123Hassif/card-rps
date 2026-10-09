@@ -732,14 +732,14 @@ html, body {
 }
 
 .rubber-hose-circle-btn svg {
-  width: 120px;
-  height: 120px;
+  width: 125px;
+  height: 125px;
+  overflow: visible;
 }
 
-/* Irregular ink pen hand-drawn circle border */
-.ink-circle-bg {
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.2s ease;
-  transform-origin: 100px 100px;
+.porthole-frame-group {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 120px 120px;
 }
 
 .btn-title-label {
@@ -748,7 +748,7 @@ html, body {
   letter-spacing: 1.5px;
   color: var(--parchment-white);
   text-shadow: 2px 2px 0px var(--ink-black), -2px -2px 0px var(--ink-black), 2px -2px 0px var(--ink-black), -2px 2px 0px var(--ink-black);
-  margin-top: -10px;
+  margin-top: -6px;
   z-index: 5;
 }
 
@@ -762,7 +762,7 @@ html, body {
   border-radius: 10px;
   padding: 1px 7px;
   box-shadow: 1.5px 1.5px 0px var(--ink-black);
-  margin-top: 1px;
+  margin-top: 2px;
   z-index: 5;
 }
 
@@ -771,53 +771,62 @@ html, body {
    ========================================================================== */
 
 .rubber-hose-circle-btn:not(.disabled):hover {
-  transform: translateY(-6px) scale(1.05);
+  transform: translateY(-6px) scale(1.06);
 }
 
-.rubber-hose-circle-btn:not(.disabled):hover .ink-circle-bg {
-  stroke-width: 9;
-  transform: scale(1.02);
+.rubber-hose-circle-btn:not(.disabled):hover .porthole-frame-group {
+  transform: scale(1.03);
 }
 
 .rubber-hose-circle-btn:not(.disabled):active {
   transform: translateY(2px) scale(0.96);
 }
 
-/* Rock Hover Animation: Muscle flex & body squash-stretch */
+/* Rock Hover Animation: Fist pumping & muscle flex */
 .rock-btn:not(.disabled):hover .rock-body-group {
-  animation: rockFlex 0.4s infinite alternate ease-in-out;
-  transform-origin: 100px 140px;
+  animation: rockFlex 0.35s infinite alternate ease-in-out;
+  transform-origin: 120px 140px;
 }
 
 @keyframes rockFlex {
   0% { transform: scale(1, 1); }
-  100% { transform: scale(1.06, 0.94) rotate(-2deg); }
+  100% { transform: scale(1.05, 0.95) rotate(-2deg); }
 }
 
-.rock-btn:not(.disabled):hover .crossed-rubber-arms {
-  animation: armFlex 0.3s infinite alternate ease-in-out;
-  transform-origin: 100px 140px;
+.rock-btn:not(.disabled):hover .right-arm-out {
+  animation: fistPump 0.28s infinite alternate ease-in-out;
+  transform-origin: 156px 126px;
 }
 
-@keyframes armFlex {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-4px) scale(1.04); }
+@keyframes fistPump {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(8deg) scale(1.1); }
+}
+
+.rock-btn:not(.disabled):hover .left-arm-out {
+  animation: leftArmWiggle 0.35s infinite alternate ease-in-out;
+  transform-origin: 84px 126px;
+}
+
+@keyframes leftArmWiggle {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-6deg); }
 }
 
 /* Paper Hover Animation: Waving arm sweeps rapidly & scroll bounces */
-.paper-btn:not(.disabled):hover .right-arm-waving {
-  animation: paperWave 0.25s infinite alternate ease-in-out;
-  transform-origin: 140px 96px;
+.paper-btn:not(.disabled):hover .left-arm-wave {
+  animation: paperWave 0.22s infinite alternate ease-in-out;
+  transform-origin: 84px 105px;
 }
 
 @keyframes paperWave {
-  0% { transform: rotate(-14deg); }
-  100% { transform: rotate(18deg); }
+  0% { transform: rotate(-12deg); }
+  100% { transform: rotate(16deg); }
 }
 
 .paper-btn:not(.disabled):hover .paper-body-group {
-  animation: paperBounce 0.4s infinite alternate ease-in-out;
-  transform-origin: 100px 100px;
+  animation: paperBounce 0.35s infinite alternate ease-in-out;
+  transform-origin: 120px 120px;
 }
 
 @keyframes paperBounce {
@@ -826,34 +835,34 @@ html, body {
 }
 
 /* Scissors Hover Animation: Snip-snip chomping jaws! */
-.scissors-btn:not(.disabled):hover .scissor-blades {
-  animation: scissorChomp 0.18s infinite alternate ease-in-out;
-  transform-origin: 100px 102px;
-}
-
-@keyframes scissorChomp {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.12) rotate(-6deg); }
-}
-
 .scissors-btn:not(.disabled):hover .left-blade {
   animation: bladeLeftSnip 0.16s infinite alternate ease-in-out;
-  transform-origin: 100px 102px;
+  transform-origin: 120px 122px;
 }
 
 .scissors-btn:not(.disabled):hover .right-blade {
   animation: bladeRightSnip 0.16s infinite alternate ease-in-out;
-  transform-origin: 100px 102px;
+  transform-origin: 120px 122px;
 }
 
 @keyframes bladeLeftSnip {
   0% { transform: rotate(0deg); }
-  100% { transform: rotate(-18deg); }
+  100% { transform: rotate(-14deg); }
 }
 
 @keyframes bladeRightSnip {
   0% { transform: rotate(0deg); }
-  100% { transform: rotate(18deg); }
+  100% { transform: rotate(14deg); }
+}
+
+.scissors-btn:not(.disabled):hover .scissors-toothy-smile {
+  animation: smileChomp 0.18s infinite alternate ease-in-out;
+  transform-origin: 120px 160px;
+}
+
+@keyframes smileChomp {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px) scaleY(1.12); }
 }
 
 /* Disabled State */
