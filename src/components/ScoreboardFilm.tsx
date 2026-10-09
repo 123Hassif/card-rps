@@ -37,9 +37,8 @@ export const ScoreboardFilm: React.FC<ScoreboardProps> = ({
             <span className="score-label">JOUEUR</span>
             <div className="flip-counter">
               <div className="flip-card">
-                <div className="card-top">{playerScore}</div>
+                <span className="card-digit">{playerScore}</span>
                 <div className="card-seam" />
-                <div className="card-bottom">{playerScore}</div>
               </div>
               <span className="counter-slash">/</span>
               <span className="counter-target">{targetScore}</span>
@@ -53,9 +52,8 @@ export const ScoreboardFilm: React.FC<ScoreboardProps> = ({
             <span className="score-label">ORDI</span>
             <div className="flip-counter">
               <div className="flip-card">
-                <div className="card-top">{botScore}</div>
+                <span className="card-digit">{botScore}</span>
                 <div className="card-seam" />
-                <div className="card-bottom">{botScore}</div>
               </div>
               <span className="counter-slash">/</span>
               <span className="counter-target">{targetScore}</span>
